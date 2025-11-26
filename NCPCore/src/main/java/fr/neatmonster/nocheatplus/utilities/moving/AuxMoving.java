@@ -113,7 +113,7 @@ public class AuxMoving implements IRegisterAsGenericInstance {
     public synchronized void resetPositionsAndMediumProperties(final Player player, final Location loc, final MovingData data, final MovingConfig cc) {
         final PlayerMoveInfo moveInfo = usePlayerMoveInfo();
         moveInfo.set(player, loc, null, cc.yOnGround);
-        data.resetPlayerPositions(moveInfo.from);
+        data.resetPlayerPositions(moveInfo.from); // TODO (NAHU): SHIT GETS CLEARED HERE
         data.adjustLiftOffEnvelope(moveInfo.from);
         data.adjustMediumProperties(loc, cc, player, data.playerMoves.getCurrentMove());
         returnPlayerMoveInfo(moveInfo);

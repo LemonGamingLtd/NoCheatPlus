@@ -518,7 +518,7 @@ public class BlockProperties {
             blockCache.setPlayerData(DataManager.getPlayerData((Player)entity));
         }
         eLoc.setBlockCache(blockCache);
-        Location loc = new Location(location.getWorld(), thisMove.from.getX(), thisMove.from.getY(), thisMove.from.getZ());
+        Location loc = location.clone(); // TODO (NAHU): WHY? //new Location(location.getWorld(), thisMove.from.getX(), thisMove.from.getY(), thisMove.from.getZ());
         eLoc.set(loc, entity, yOnGround);
         double friction;
         if (eLoc.isInWater()) {

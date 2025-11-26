@@ -47,6 +47,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import fr.neatmonster.nocheatplus.NCPAPIProvider;
@@ -136,6 +137,8 @@ import fr.neatmonster.nocheatplus.worlds.WorldFactoryArgument;
  * Central location to listen to events that are relevant for the moving checks.
  */
 public class MovingListener extends CheckListener implements TickListener, IRemoveData, IHaveCheckType, INeedConfig, JoinLeaveListener {
+
+    private final Plugin plugin = Bukkit.getPluginManager().getPlugin("NoCheatPlus");
 
     /** The no fall check. **/
     public final NoFall noFall = addCheck(new NoFall());
@@ -314,19 +317,21 @@ public class MovingListener extends CheckListener implements TickListener, IRemo
         final MovingConfig cc = pData.getGenericInstance(MovingConfig.class);
         data.clearMostMovingCheckData();
         final Location loc = player.getLocation(useChangeWorldLoc);
-        data.setSetBack(loc);
-        if (cc.loadChunksOnWorldChange) {
-            MovingUtil.ensureChunksLoaded(player, loc, "world change", data, cc, pData);
-        }
-        aux.resetPositionsAndMediumProperties(player, loc, data, cc);
-        data.resetTrace(player, loc, TickTask.getTick(), mcAccess.getHandle(), cc);
-        // Just in case.
-        if (cc.enforceLocation) {
-            playersEnforce.add(player.getName());
-        }
-        useChangeWorldLoc.setWorld(null);
+        SchedulerHelper.runSyncTaskAtLocation(loc, plugin, (arg) -> { // TODO (NAHU): IS THIS REALLY NEEDED?
+            data.setSetBack(loc);
+            if (cc.loadChunksOnWorldChange) {
+                MovingUtil.ensureChunksLoaded(player, loc, "world change", data, cc, pData);
+            }
+            aux.resetPositionsAndMediumProperties(player, loc, data, cc);
+            data.resetTrace(player, loc, TickTask.getTick(), mcAccess.getHandle(), cc);
+            // Just in case.
+            if (cc.enforceLocation) {
+                playersEnforce.add(player.getName());
+            }
+            useChangeWorldLoc.setWorld(null);
+        });
     }
-    
+
     // NOTE: IgnoreCancelled = true?
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWindChargeExplode(EntityExplodeEvent e) {
@@ -841,18 +846,20 @@ public class MovingListener extends CheckListener implements TickListener, IRemo
         data.hasLeatherBoots = BridgeMisc.canStandOnPowderSnow(player);
         data.lastY = from.getY();
         
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Change world miss on Folia-based servers. Not efficient, requires the first move event fire to know  //
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if (SchedulerHelper.isFoliaServer()) {
-            if (data.fromMissedWorldChange != null && !data.fromMissedWorldChange.equals(from.getWorld())) {
-                // Artificially fire the event. Data will be reset onPlayerChangedWorld()
-                // TODO: Maybe report to Folia?
-                final PlayerChangedWorldEvent e = new PlayerChangedWorldEvent(player, data.fromMissedWorldChange);
-                Bukkit.getPluginManager().callEvent(e);
-            }
-            data.fromMissedWorldChange = from.getWorld();
-        }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //// Change world miss on Folia-based servers. Not efficient, requires the first move event fire to know  //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //System.out.println("FOLIA: " + SchedulerHelper.isFoliaServer());
+        //if (SchedulerHelper.isFoliaServer()) {
+        //    System.out.println("FIRING FAKE WORLD CHANGE EVENT!");
+        //    if (data.fromMissedWorldChange != null && !data.fromMissedWorldChange.equals(from.getWorld())) {
+        //        // Artificially fire the event. Data will be reset onPlayerChangedWorld()
+        //        // TODO: Maybe report to Folia?
+        //        final PlayerChangedWorldEvent e = new PlayerChangedWorldEvent(player, data.fromMissedWorldChange);
+        //        Bukkit.getPluginManager().callEvent(e);
+        //    }
+        //    data.fromMissedWorldChange = from.getWorld();
+        //}
         
         // (newTo should be null here)
         // TODO: Abstract away this mechanic.

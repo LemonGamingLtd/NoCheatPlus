@@ -38,7 +38,8 @@ public class SchedulerHelper {
     // private static final Class<?> AsyncScheduler = ReflectionUtil.getClass("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
     private static final Class<?> GlobalRegionScheduler = ReflectionUtil.getClass("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
     private static final Class<?> EntityScheduler = ReflectionUtil.getClass("io.papermc.paper.threadedregions.scheduler.EntityScheduler");
-    private static final boolean isFoliaServer = RegionizedServer && GlobalRegionScheduler != null && EntityScheduler != null; // && AsyncScheduler != null
+    private static final Class<?> RegionScheduler = ReflectionUtil.getClass("io.papermc.paper.threadedregions.scheduler.RegionScheduler");
+    private static final boolean isFoliaServer = RegionizedServer && GlobalRegionScheduler != null && EntityScheduler != null && RegionScheduler != null; // && AsyncScheduler != null
     
     /**
      * @return Whether the server is running Folia
@@ -154,6 +155,33 @@ public class SchedulerHelper {
             Method executeMethod = schedulerClass.getMethod("runDelayed", Plugin.class, Consumer.class, long.class);
 
             Object taskInfo = executeMethod.invoke(syncScheduler, plugin, run, delay);
+            return taskInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Schedules a synchronous task at a location on the next tick, either using Bukkit's scheduler or Folia's region scheduler.
+     *
+     * @param location  Location to run at.
+     * @param plugin    The plugin that owns the task.
+     * @param run       The task to execute, represented as a consumer that accepts an object (or {@code null} for Paper/Spigot).
+     * @return An integer task ID for Paper/Spigot, or a {@code ScheduledTask} object for Folia (returns {@code null} if scheduling fails).
+     */
+    public static Object runSyncTaskAtLocation(Location location, Plugin plugin, Consumer<Object> run) {
+        if (!isFoliaServer()) {
+            return runSyncTask(plugin, run);
+        }
+        try {
+            Method getSchedulerMethod = ReflectionUtil.getMethodNoArgs(Server.class, "getRegionScheduler", RegionScheduler);
+            Object syncScheduler = getSchedulerMethod.invoke(Bukkit.getServer());
+
+            Class<?> schedulerClass = syncScheduler.getClass();
+            Method executeMethod = schedulerClass.getMethod("run", Plugin.class, Location.class, Consumer.class);
+
+            Object taskInfo = executeMethod.invoke(syncScheduler, plugin, location, run);
             return taskInfo;
         } catch (Exception e) {
             e.printStackTrace();
