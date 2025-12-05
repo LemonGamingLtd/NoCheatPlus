@@ -84,7 +84,8 @@ public class BlockBreakListener extends CheckListener {
     private final Counters counters = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstance(Counters.class);
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     @SuppressWarnings("unchecked")
     public BlockBreakListener(){
@@ -182,7 +183,7 @@ public class BlockBreakListener extends CheckListener {
         final FlyingQueueHandle flyingHandle;
         if (reach.isEnabled(player, pData) || direction.isEnabled(player, pData)) {
             flyingHandle = new FlyingQueueHandle(pData);
-            final Location loc = player.getLocation(useLoc);
+            final Location loc = player.getLocation();
             final double eyeHeight = MovingUtil.getEyeHeight(player);
             // Is the block really in reach distance?
             if (!cancelled) {
@@ -206,7 +207,7 @@ public class BlockBreakListener extends CheckListener {
                     cancelled = true;
                 }
             }
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
         }
         else flyingHandle = null;
 

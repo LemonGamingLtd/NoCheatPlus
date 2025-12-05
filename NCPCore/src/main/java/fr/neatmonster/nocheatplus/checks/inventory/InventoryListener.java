@@ -111,7 +111,8 @@ public class InventoryListener  extends CheckListener implements JoinLeaveListen
     private final boolean hasInventoryAction;
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     private final Counters counters = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstance(Counters.class);
 
@@ -158,7 +159,7 @@ public class InventoryListener  extends CheckListener implements JoinLeaveListen
             final IPlayerData pData = DataManager.getPlayerData(player);
             if (instantBow.isEnabled(player, pData)) {
                 final long now = System.currentTimeMillis();
-                final Location loc = player.getLocation(useLoc);
+                final Location loc = player.getLocation();
                 if (Combined.checkYawRate(player, loc.getYaw(), now, loc.getWorld().getName(), pData)) {
                     // No else if with this, could be cancelled due to other checks feeding, does not have actions.
                     event.setCancelled(true);
@@ -178,7 +179,7 @@ public class InventoryListener  extends CheckListener implements JoinLeaveListen
                         event.setCancelled(true);
                     }
                 }
-                useLoc.setWorld(null);
+                //useLoc.setWorld(null);
             }  
         }
     }

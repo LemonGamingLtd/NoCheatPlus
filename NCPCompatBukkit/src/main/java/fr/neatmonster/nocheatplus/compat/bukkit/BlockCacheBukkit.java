@@ -31,7 +31,8 @@ public class BlockCacheBukkit extends BlockCache {
     protected World world;
 
     /** Temporary use. Use LocUtil.clone before passing on. Call setWorld(null) after use. */
-    protected final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //protected final Location useLoc = new Location(null, 0, 0, 0);
 
     public BlockCacheBukkit(World world) {
         setAccess(world);
@@ -81,8 +82,8 @@ public class BlockCacheBukkit extends BlockCache {
                 if (!MaterialUtil.isBoat(type) && type != EntityType.SHULKER){ //  && !(other instanceof Minecart)) 
                     continue;
                 }
-                final double locY = entity.getLocation(useLoc).getY();
-                useLoc.setWorld(null);
+                final double locY = entity.getLocation().getY();
+                //useLoc.setWorld(null);
                 // TODO: A "better" estimate is possible, though some more tolerance would be good. 
                 return Math.abs(locY - minY) < 0.7;
             }

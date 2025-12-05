@@ -96,7 +96,8 @@ public class BlockInteractListener extends CheckListener {
     private final Speed speed = addCheck(new Speed());
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     private final Counters counters = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstance(Counters.class);
 
@@ -219,7 +220,7 @@ public class BlockInteractListener extends CheckListener {
         }
 
         final BlockInteractConfig cc = pData.getGenericInstance(BlockInteractConfig.class);
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         final FlyingQueueHandle flyingHandle = new FlyingQueueHandle(pData);
         boolean preventUseItem = false;
         boolean cancelled = false;
@@ -273,7 +274,7 @@ public class BlockInteractListener extends CheckListener {
         }
         // Set resolution here already
         data.setPlayerInteractEventResolution(event);
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
     }
 
     private void logUsedFlyingPacket(final Player player, final FlyingQueueHandle flyingHandle, final int flyingIndex) {

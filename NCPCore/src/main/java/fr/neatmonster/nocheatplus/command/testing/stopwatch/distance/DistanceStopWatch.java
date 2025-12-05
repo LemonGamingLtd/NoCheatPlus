@@ -39,13 +39,13 @@ public class DistanceStopWatch extends LocationBasedStopWatchData{
 
     @Override
     public boolean checkStop() {
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         if (!worldName.equals(loc.getWorld().getName()) || TrigUtil.distanceSquared(x, y, z, loc.getX(), loc.getY(), loc.getZ()) >= distanceSq) {
             stop();
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             return true;
         } else {
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             return false;
         }
     }

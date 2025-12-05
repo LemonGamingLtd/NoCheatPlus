@@ -108,10 +108,12 @@ public class FightListener extends CheckListener implements JoinLeaveListener{
     private final Visible visible = addCheck(new Visible());
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc1 = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc1 = new Location(null, 0, 0, 0);
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc2 = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc2 = new Location(null, 0, 0, 0);
 
     /** Auxiliary utilities for moving */
     private final AuxMoving auxMoving = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstance(AuxMoving.class);
@@ -184,9 +186,9 @@ public class FightListener extends CheckListener implements JoinLeaveListener{
         final long now = System.currentTimeMillis();
         final boolean worldChanged = !worldName.equals(data.lastWorld);
         /** Attacker's location */
-        final Location loc =  player.getLocation(useLoc1);
+        final Location loc =  player.getLocation();
         /** Damaged entity's location */
-        final Location damagedLoc = damaged.getLocation(useLoc2);
+        final Location damagedLoc = damaged.getLocation();
         final double targetMove;
         final int tickAge;
         /** Milliseconds ticks actually took */
@@ -394,8 +396,8 @@ public class FightListener extends CheckListener implements JoinLeaveListener{
         }
 
         // Cleanup.
-        useLoc1.setWorld(null);
-        useLoc2.setWorld(null);
+        //useLoc1.setWorld(null);
+        //useLoc2.setWorld(null);
         return cancelled;
     }
 
@@ -694,7 +696,7 @@ public class FightListener extends CheckListener implements JoinLeaveListener{
         final double xVelocity = vel2Dvec[0];
         final double zVelocity = vel2Dvec[2];
         final double yVelocity = vel2Dvec[1];
-        useLoc1.setWorld(null); // Cleanup.
+        //useLoc1.setWorld(null); // Cleanup.
         if (pData.isDebugActive(checkType) || pData.isDebugActive(CheckType.MOVING)) {
             debug(damagedPlayer, "Received knockback level: " + knockbackLvl);
         }

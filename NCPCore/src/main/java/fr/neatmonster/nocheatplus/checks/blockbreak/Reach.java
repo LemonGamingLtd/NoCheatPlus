@@ -32,7 +32,8 @@ import fr.neatmonster.nocheatplus.utilities.math.TrigUtil;
 public class Reach extends Check {
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     /** The maximum distance allowed to interact with a block in creative mode. */
     public static final double CREATIVE_DISTANCE = 5.6D;
@@ -61,11 +62,11 @@ public class Reach extends Check {
     	// TODO: Ray tracing-based?
         boolean cancel = false;
         final double distanceLimit = player.getGameMode() == GameMode.CREATIVE ? CREATIVE_DISTANCE : SURVIVAL_DISTANCE; 
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         loc.setY(loc.getY() + eyeHeight);
          // Distance is calculated from eye location to center of targeted block.
         final double distance = TrigUtil.distance(loc, block) - distanceLimit;
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
 
         if (distance > distanceLimit) {
             // They failed, increment violation level.

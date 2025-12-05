@@ -40,7 +40,8 @@ public abstract class MoveInfo <REL extends RichEntityLocation, E extends Entity
      * Would need cloning for passing to external API. This is not initialized
      * in set. World is set to null on cleanup!
      */
-    public final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //public final Location useLoc = new Location(null, 0, 0, 0);
     public final WrapBlockCache wrapCache;
     public final REL from;
     public final REL to;
@@ -93,7 +94,7 @@ public abstract class MoveInfo <REL extends RichEntityLocation, E extends Entity
      * of useLoc.
      */
     public final void cleanup(){
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         from.cleanup();
         to.cleanup();
         wrapCache.cleanup();

@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 public abstract class LocationBasedStopWatchData extends StopWatch{
 
     /** For efficient location getting, such as player.getLocation(useLoc), always setWorld(null). */
-    protected static final Location useLoc = new Location(null, 0, 0, 0);
+    //protected static final Location useLoc = new Location(null, 0, 0, 0);
 
     public final String worldName;
     public final double x;
@@ -38,12 +38,12 @@ public abstract class LocationBasedStopWatchData extends StopWatch{
      */
     public LocationBasedStopWatchData(Player player) {
         super(player);
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         worldName = loc.getWorld().getName();
         x = loc.getX();
         y = loc.getY();
         z = loc.getZ();
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
     }
 
 }

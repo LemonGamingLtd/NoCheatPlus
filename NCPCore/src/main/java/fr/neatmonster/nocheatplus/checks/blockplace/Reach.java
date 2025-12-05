@@ -38,7 +38,8 @@ public class Reach extends Check {
     public static final double SURVIVAL_DISTANCE = 5.2D;
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     /**
      * Instantiates a new reach check.
@@ -63,7 +64,7 @@ public class Reach extends Check {
         boolean cancel = false;
         final double distanceLimit = player.getGameMode() == GameMode.CREATIVE ? CREATIVE_DISTANCE : SURVIVAL_DISTANCE;
         // Distance is calculated from eye location to center of targeted block.
-        final Location eyeLoc = player.getLocation(useLoc);
+        final Location eyeLoc = player.getLocation();
         eyeLoc.setY(eyeLoc.getY() + eyeHeight);
         final double distance = TrigUtil.distance(eyeLoc, block) - distanceLimit;
 
@@ -79,7 +80,7 @@ public class Reach extends Check {
         // Player passed the check, reward them
         else data.reachVL *= 0.9D;
         // Cleanup.
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         return cancel;
     }
 }

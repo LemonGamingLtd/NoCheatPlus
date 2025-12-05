@@ -60,8 +60,8 @@ public class MovingUtil {
     /**
      * Always set world to null after use, careful with nested methods. Main thread only.
      */
-    private static final Location useLoc = new Location(null, 0, 0, 0);
-    private static final Location useLoc2 = new Location(null, 0, 0, 0);
+    //private static final Location useLoc = new Location(null, 0, 0, 0);
+    //private static final Location useLoc2 = new Location(null, 0, 0, 0);
     //    /** Fast scan flags for 'mostly air'. */
     //    private static final long FLAGS_SCAN_FOR_GROUND_OR_RESETCOND = 
     //            BlockFlags.F_SOLID | BlockFlags.F_GROUND
@@ -263,7 +263,7 @@ public class MovingUtil {
             if (entity.getType() != EntityType.PLAYER) {
                 continue;
             }
-            final Location refLoc = entity.getLocation(useLoc2);
+            final Location refLoc = entity.getLocation();
             // Exempt world spawn.
             // TODO: Exempt other warps -> HASH based exemption (expire by time, keep high count)?
             if (TrigUtil.isSamePos(loc, refLoc) && (entity instanceof Player)) {
@@ -292,7 +292,7 @@ public class MovingUtil {
                 }
             }
         }
-        useLoc2.setWorld(null); // Cleanup.
+        //useLoc2.setWorld(null); // Cleanup.
         if (untrackedData == null) {
             return null;
         }
@@ -532,17 +532,17 @@ public class MovingUtil {
         }
         // (teleported is set.).
 
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         if (data.isTeleportedPosition(loc)) {
             // Skip redundant teleport.
             if (debug) {
                 CheckUtils.debug(player, CheckType.MOVING, debugMessagePrefix + "Skip teleport, player is there, already.");
             }
             data.resetTeleported(); // Not necessary to keep.
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             return false;
         }
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         // (player is somewhere else.)
 
         // Post-1.9 packet level workaround.

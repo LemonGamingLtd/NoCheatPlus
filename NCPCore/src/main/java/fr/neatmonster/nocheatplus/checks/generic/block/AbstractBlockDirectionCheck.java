@@ -17,6 +17,7 @@ package fr.neatmonster.nocheatplus.checks.generic.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.neatmonster.nocheatplus.utilities.math.TrigUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -81,7 +82,8 @@ public abstract class AbstractBlockDirectionCheck<D extends ICheckData, C extend
     }
 
     private final ICollideRayVsAABB boulder = new CollideRayVsAABB();
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     private final BoulderChecker checker = new BoulderChecker();
 
@@ -197,9 +199,7 @@ public abstract class AbstractBlockDirectionCheck<D extends ICheckData, C extend
     private double checkBoulder(final double x, final double y, final double z,
             final float yaw, final float pitch,
             final int blockX, final int blockY, final int blockZ) {
-        useLoc.setYaw(yaw);
-        useLoc.setPitch(pitch);
-        final Vector dir = useLoc.getDirection(); // TODO: More efficient.
+        final Vector dir = TrigUtil.getDirection(yaw, pitch); // TODO: More efficient.
         final double dirX = dir.getX();
         final double dirY = dir.getY();
         final double dirZ = dir.getZ();

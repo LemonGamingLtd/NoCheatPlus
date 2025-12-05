@@ -42,7 +42,8 @@ import fr.neatmonster.nocheatplus.utilities.math.TrigUtil;
 public class Moving extends Check {
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //final Location useLoc = new Location(null, 0, 0, 0);
     final List<String> tags = new ArrayList<String>();
     
     public Moving() {
@@ -75,7 +76,7 @@ public class Moving extends Check {
         if (packetData != null && packetData.hasPos) {
             final MovingData mData = pData.getGenericInstance(MovingData.class);
             /** Actual Location on the server */
-            final Location knownLocation = player.getLocation(useLoc);
+            final Location knownLocation = player.getLocation();
             /** Claimed Location sent by the client */
             final Location packetLocation = new Location(null, packetData.getX(), packetData.getY(), packetData.getZ());
             //final double distanceSq = TrigUtil.distanceSquared(knownLocation, packetLocation);
@@ -103,15 +104,15 @@ public class Moving extends Check {
             if (packetData.hasPos) {
                 builder.append(CheckUtils.getLogMessagePrefix(player, type));
                 builder.append("\nPacket location: " + LocUtil.simpleFormat(packetLocation));
-                builder.append("\nServer location: " + LocUtil.simpleFormat(player.getLocation(useLoc)));
-                builder.append("\nDeltas: h= " + TrigUtil.distance(player.getLocation(useLoc), packetLocation) + ", y= " + Math.abs(player.getLocation(useLoc).getY() - packetLocation.getY()));
+                builder.append("\nServer location: " + LocUtil.simpleFormat(player.getLocation()));
+                builder.append("\nDeltas: h= " + TrigUtil.distance(player.getLocation(), packetLocation) + ", y= " + Math.abs(player.getLocation().getY() - packetLocation.getY()));
             }
             else {
             	builder.append("Empty packet (no position)");
             }
             NCPAPIProvider.getNoCheatPlusAPI().getLogManager().debug(Streams.TRACE_FILE, builder.toString());
         }
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         return cancel;
     }
 }

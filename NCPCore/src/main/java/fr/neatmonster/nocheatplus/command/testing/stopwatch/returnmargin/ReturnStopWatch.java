@@ -35,14 +35,14 @@ public class ReturnStopWatch extends LocationBasedStopWatchData{
 
     @Override
     public boolean checkStop() {
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         if (!worldName.equals(loc.getWorld().getName())) {
             stop();
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             return true;
         } 
         final double distSq = TrigUtil.distanceSquared(x, y, z, loc.getX(), loc.getY(), loc.getZ());
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         if (!started) {
             // Skip until the player made it out of the margin.
             if (distSq > marginDistanceSq) {

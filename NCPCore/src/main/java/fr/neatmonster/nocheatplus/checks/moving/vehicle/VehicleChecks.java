@@ -88,16 +88,17 @@ public class VehicleChecks extends CheckListener {
 
     private final Set<EntityType> normalVehicles = new HashSet<EntityType>();
 
-    /** Temporary use, reset world to null afterwards, avoid nesting. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
-    /** Temporary use, reset world to null afterwards, avoid nesting. */
-    private final Location useLocEnter = new Location(null, 0, 0, 0);
-    /** Temporary use, reset world to null afterwards, avoid nesting. */
-    private final Location useLocLeave = new Location(null, 0, 0, 0);
-    /** Temporary use, reset world to null afterwards, avoid nesting. */
-    private final Location useLocVehicleEnter = new Location(null, 0, 0, 0);
-    /** Temporary use, reset world to null afterwards, avoid nesting. */
-    private final Location useLocVehicleLeave = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    ///** Temporary use, reset world to null afterwards, avoid nesting. */
+    //private final Location useLoc = new Location(null, 0, 0, 0);
+    ///** Temporary use, reset world to null afterwards, avoid nesting. */
+    //private final Location useLocEnter = new Location(null, 0, 0, 0);
+    ///** Temporary use, reset world to null afterwards, avoid nesting. */
+    //private final Location useLocLeave = new Location(null, 0, 0, 0);
+    ///** Temporary use, reset world to null afterwards, avoid nesting. */
+    //private final Location useLocVehicleEnter = new Location(null, 0, 0, 0);
+    ///** Temporary use, reset world to null afterwards, avoid nesting. */
+    //private final Location useLocVehicleLeave = new Location(null, 0, 0, 0);
 
     /** Temporary use, avoid nesting. */
     private final SimplePositionWithLook usePos1 = new SimplePositionWithLook();
@@ -367,7 +368,7 @@ public class VehicleChecks extends CheckListener {
         final World world = vehicle.getWorld();
         final VehicleMoveInfo moveInfo = aux.useVehicleMoveInfo();
         // vehicleLocation: Track when it could become null! -> checkIllegal  -> no setback or null location.
-        final Location vehicleLocation = vehicle.getLocation(moveInfo.useLoc);
+        final Location vehicleLocation = vehicle.getLocation();
         final VehicleMoveData firstPastMove = data.vehicleMoves.getFirstPastMove();
         // Ensure firstPastMove is valid.
         if (!firstPastMove.valid) {
@@ -383,7 +384,7 @@ public class VehicleChecks extends CheckListener {
         }
         // Determine best locations to use.
         // (Currently always use firstPastMove and vehicleLocation.)
-        final Location useFrom = LocUtil.set(useLoc, world, firstPastMove.toIsValid ? firstPastMove.to : firstPastMove.from);
+        final Location useFrom = LocUtil.set(vehicleLocation, world, firstPastMove.toIsValid ? firstPastMove.to : firstPastMove.from);
         final Location useTo = vehicleLocation;
         // Initialize moveInfo.
         if (vehicleType == EntityType.PIG) {
@@ -501,11 +502,11 @@ public class VehicleChecks extends CheckListener {
         // TODO: (private or public?)
         final boolean debug = pData.isDebugActive(checkType);
         data.joinOrRespawn = false;
-        data.vehicleConsistency = MoveConsistency.getConsistency(thisMove, player.getLocation(useLoc));
+        data.vehicleConsistency = MoveConsistency.getConsistency(thisMove, player.getLocation());
         switch (data.vehicleConsistency) {
             case FROM:
             case TO:
-                aux.resetPositionsAndMediumProperties(player, player.getLocation(useLoc), data, cc); // TODO: Drop MC 1.4!
+                aux.resetPositionsAndMediumProperties(player, player.getLocation(), data, cc); // TODO: Drop MC 1.4!
                 break;
             case INCONSISTENT:
                 // TODO: Any exploits exist? -> TeleportUtil.forceMount(player, vehicle)
@@ -594,7 +595,7 @@ public class VehicleChecks extends CheckListener {
                 setBack(player, vehicle, newTo, data, cc, pData);
             //}, null);
         }
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
     }
 
     private void updateVehicleData(final Player player, final MovingData data, final Entity vehicle, 
@@ -661,7 +662,7 @@ public class VehicleChecks extends CheckListener {
             boolean scheduleSetBack = cc.scheduleVehicleSetBacks;
             // Schedule as task, if set so.
             if (scheduleSetBack) {
-                aux.resetVehiclePositions(vehicle, LocUtil.set(useLoc, vehicle.getWorld(), newTo), data, cc); // Heavy-ish, though.
+                aux.resetVehiclePositions(vehicle, LocUtil.set(vehicle.getLocation(), vehicle.getWorld(), newTo), data, cc); // Heavy-ish, though.
                 data.vehicleSetBackTaskId = SchedulerHelper.runSyncTaskForEntity(vehicle, plugin, (arg) -> new VehicleSetBackTask(vehicle, player, newTo.getLocation(vehicle.getWorld()), debug).run(), null);
                 if (!SchedulerHelper.isTaskScheduled(data.vehicleSetBackTaskId)) {
                     NCPAPIProvider.getNoCheatPlusAPI().getLogManager().warning(Streams.STATUS, "Failed to schedule vehicle set back task. Player: " + player.getName() + " , set back: " + newTo);
@@ -775,8 +776,8 @@ public class VehicleChecks extends CheckListener {
         data.vehicleLeave = false;
         data.removeAllVelocity();
         // Event should have a vehicle, in case check this last.
-        final Location vLoc = vehicle.getLocation(useLocVehicleEnter);
-        data.vehicleConsistency = MoveConsistency.getConsistency(vLoc, null, player.getLocation(useLocEnter));
+        final Location vLoc = vehicle.getLocation();
+        data.vehicleConsistency = MoveConsistency.getConsistency(vLoc, null, player.getLocation());
         if (data.isVehicleSetBack) {
             /*
              * Currently checking for consistency is done in
@@ -787,10 +788,10 @@ public class VehicleChecks extends CheckListener {
         else data.vehicleSetBacks.resetAll(vLoc);
         aux.resetVehiclePositions(vehicle, vLoc, data, cc);
         if (pData.isDebugActive(checkType)) {
-            debug(player, "Vehicle enter: " + vehicle.getType() + " , player: " + useLocEnter + " c=" + data.vehicleConsistency);
+            debug(player, "Vehicle enter: " + vehicle.getType() + " , player: " + player.getLocation() + " c=" + data.vehicleConsistency);
         }
-        useLocVehicleEnter.setWorld(null);
-        useLocEnter.setWorld(null);
+        //useLocVehicleEnter.setWorld(null);
+        //useLocEnter.setWorld(null);
         // TODO: more resetting, visible check (visible -> interact entity) ?
     }
 
@@ -869,12 +870,12 @@ public class VehicleChecks extends CheckListener {
         //      }
         final MovingConfig cc = pData.getGenericInstance(MovingConfig.class);
         // TODO: Loc can be inconsistent, determine which to use ! 
-        final Location pLoc = player.getLocation(useLocLeave);
+        final Location pLoc = player.getLocation();
         Location loc = pLoc; // The location to use as set back.
         //  TODO: Which vehicle to use ?
         // final Entity vehicle = player.getVehicle();
         if (vehicle != null) {
-            final Location vLoc = vehicle.getLocation(useLocVehicleLeave);
+            final Location vLoc = vehicle.getLocation();
             // (Don't override vehicle set back and last position here.)
             // Workaround for some entities/animals that don't fire VehicleMoveEventS.
             if (!normalVehicles.contains(vehicle.getType()) || cc.noFallVehicleReset) {
@@ -920,8 +921,8 @@ public class VehicleChecks extends CheckListener {
         //data.addHorizontalVelocity(new AccountEntry(0.9, 1, 1));
         //data.addVerticalVelocity(new SimpleEntry(0.6, 1)); // TODO: Typical margin?
         data.vehicleLeave = true;
-        useLocLeave.setWorld(null);
-        useLocVehicleLeave.setWorld(null);
+        //useLocLeave.setWorld(null);
+        //useLocVehicleLeave.setWorld(null);
     }
 
     //        @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=false)

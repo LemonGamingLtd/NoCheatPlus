@@ -141,6 +141,15 @@ public class TrigUtil {
         float f5 = sin(f);
         return new Vector((double)(f3 * f4), (double)-f5, (double)(f2 * f4));
     }
+
+    public static final Vector getDirection(float yaw, float pitch) {
+        final Vector direction = new Vector();
+        direction.setY(-Math.sin(Math.toRadians(pitch)));
+        double xz = Math.cos(Math.toRadians(pitch));
+        direction.setX(-xz * Math.sin(Math.toRadians(yaw)));
+        direction.setZ(xz * Math.cos(Math.toRadians(yaw)));
+        return direction;
+    }
     
     /**
      * Returns the looking direction vector of the player.

@@ -86,7 +86,8 @@ public class ChatListener extends CheckListener implements INotifyReload, JoinLe
     private final SimpleCharPrefixTree consoleOnlyCommands = new SimpleCharPrefixTree(); 
 
     /** Set world to null after use, primary thread only. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     @SuppressWarnings("unchecked")
     public ChatListener() {
@@ -228,7 +229,7 @@ public class ChatListener extends CheckListener implements INotifyReload, JoinLe
 
     private boolean checkUntrackedLocation(final Player player, final String message, 
                                            final MovingConfig mcc, final IPlayerData pData) {
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         boolean cancel = false;
         if (MovingUtil.shouldCheckUntrackedLocation(player, loc, pData)) {
             final Location newTo = MovingUtil.checkUntrackedLocation(loc);
@@ -243,7 +244,7 @@ public class ChatListener extends CheckListener implements INotifyReload, JoinLe
                 }
             }
         }
-        useLoc.setWorld(null); // Cleanup.
+        //useLoc.setWorld(null); // Cleanup.
         return cancel;
     }
 

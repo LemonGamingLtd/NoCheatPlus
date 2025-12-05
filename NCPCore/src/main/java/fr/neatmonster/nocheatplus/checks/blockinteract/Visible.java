@@ -58,9 +58,7 @@ public class Visible extends Check {
                                 final float yaw, final float pitch,
                                 final int blockX, final int blockY, final int blockZ) {
             // Run ray-tracing again with updated pitch and yaw.
-            useLoc.setPitch(pitch);
-            useLoc.setYaw(yaw);
-            final Vector direction = useLoc.getDirection(); // TODO: Better.
+            final Vector direction = TrigUtil.getDirection(yaw, pitch);
             tags.clear();
             if (checkRayTracing(x, y, z, direction.getX(), direction.getY(), direction.getZ(), blockX, blockY, blockZ, face, tags, debug)) {
                 // Collision still.
@@ -105,7 +103,8 @@ public class Visible extends Check {
     private final List<String> tags = new ArrayList<String>();
 
     /** For temporary use, no nested use, setWorld(null) after use, etc. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+
+    //private final Location useLoc = new Location(null, 0, 0, 0); // TODO (NAHU): SHOULD BE FINE HERE, BUT FUCK YOU EITHER WAY
 
     public Visible() {
         super(CheckType.BLOCKINTERACT_VISIBLE);
@@ -202,7 +201,7 @@ public class Visible extends Check {
                 collides = false;
             }
             checker.cleanup();
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             //Cleanup.
             rayTracing.cleanup();
             blockCache.cleanup();

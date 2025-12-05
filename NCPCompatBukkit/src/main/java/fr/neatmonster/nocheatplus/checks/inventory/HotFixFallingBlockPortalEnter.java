@@ -58,7 +58,8 @@ public class HotFixFallingBlockPortalEnter implements Listener {
     }
 
     /** Temporary use only: setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
 
     private final WrapBlockCache wrapBlockCache; // TODO: Fetch a getter from the registry.
 
@@ -87,7 +88,7 @@ public class HotFixFallingBlockPortalEnter implements Listener {
             mat = null;
         }
         if (mat != null) {
-            final Location loc = entity.getLocation(useLoc);
+            final Location loc = entity.getLocation();
             final World world = loc.getWorld();
             final IWorldData worldData = NCPAPIProvider.getNoCheatPlusAPI().getWorldDataManager().getWorldData(world);
             if (worldData.getGenericInstance(InventoryConfig.class).hotFixFallingBlockEndPortalActive) {
@@ -107,7 +108,7 @@ public class HotFixFallingBlockPortalEnter implements Listener {
                     NCPAPIProvider.getNoCheatPlusAPI().getLogManager().info(Streams.STATUS, message);
                 }
             }
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
         }
     }
 

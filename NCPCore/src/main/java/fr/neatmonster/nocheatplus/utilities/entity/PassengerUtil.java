@@ -53,9 +53,10 @@ public class PassengerUtil {
     public final IHandle<IEntityAccessVehicle> handleVehicle = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstanceHandle(IEntityAccessVehicle.class);
 
     /** Temp use. LocUtil.clone on passing. setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
     /** Temp use. LocUtil.clone on passing. setWorld(null) after use. */
-    private final Location useLoc2 = new Location(null, 0, 0, 0);
+    //private final Location useLoc2 = new Location(null, 0, 0, 0);
     
     private final Plugin plugin = Bukkit.getPluginManager().getPlugin("NoCheatPlus");
 
@@ -300,7 +301,7 @@ public class PassengerUtil {
                     }
                     else {
                         if (SchedulerHelper.teleportEntity(passenger, location, BridgeMisc.TELEPORT_CAUSE_CORRECTION_OF_POSITION)
-                            && vehicleTeleported && TrigUtil.distance(passenger.getLocation(useLoc2), vehicle.getLocation(useLoc)) < 1.5) {
+                            && vehicleTeleported && TrigUtil.distance(passenger.getLocation(), vehicle.getLocation()) < 1.5) {
                             if (!handleVehicle.getHandle().addPassenger(passenger, vehicle)) {
                                 // TODO: What?
                             }
@@ -320,8 +321,8 @@ public class PassengerUtil {
         if (debug) { 
             CheckUtils.debug(player, CheckType.MOVING_VEHICLE, "Vehicle set back resolution: " + location + " pt=" + playerTeleported + " vt=" + vehicleTeleported + (otherPlayers > 0 ? (" opt=" + otherPlayersTeleported + "/" + otherPlayers) : ""));
         }
-        useLoc.setWorld(null);
-        useLoc2.setWorld(null);
+        //useLoc.setWorld(null);
+        //useLoc2.setWorld(null);
     }
 
     /**
@@ -346,7 +347,7 @@ public class PassengerUtil {
             // Allow re-use of certain workarounds. Hack/shouldbedoneelsewhere?
             data.ws.resetConditions(WRPT.G_RESET_NOTINAIR);
 
-            if (playerTeleported && vehicleTeleported && player.getLocation(useLoc2).distance(vehicle.getLocation(useLoc)) < 1.5) {
+            if (playerTeleported && vehicleTeleported && player.getLocation().distance(vehicle.getLocation()) < 1.5) {
 
                 // Still set as passenger.
                 // NOTE: VehicleEnter fires, unknown TP fires.

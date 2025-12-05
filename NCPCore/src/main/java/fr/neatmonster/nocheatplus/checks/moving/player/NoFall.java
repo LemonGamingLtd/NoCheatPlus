@@ -78,8 +78,9 @@ public class NoFall extends Check {
      */
 
     /** For temporary use: LocUtil.clone before passing deeply, call setWorld(null) after use. */
-    private final Location useLoc = new Location(null, 0, 0, 0);
-    private final Location useLoc2 = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
+    //private final Location useLoc2 = new Location(null, 0, 0, 0);
     
     private static final IGenericInstanceHandle<IAttributeAccess> attributeAccess = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstanceHandle(IAttributeAccess.class);
     
@@ -155,7 +156,7 @@ public class NoFall extends Check {
         // Base fall-distance
         float fallDist = (float) getApplicableFallHeight(player, y, previousSetBackY, data);
         // TODO: Need move data pTo, this location isn't updated
-        Block block = player.getLocation(useLoc2).subtract(0.0, 1.0, 0.0).getBlock();
+        Block block = player.getLocation().subtract(0.0, 1.0, 0.0).getBlock();
         final IPlayerData pData = DataManager.getPlayerData(player);
         
         // Falling on farmland has a chance of trampling it (wasn't always the case. On legacy versions, just walking on crops would have been enough to trample them :) )
@@ -170,7 +171,7 @@ public class NoFall extends Check {
                     debug(player, "Apply block-state change workaround for FARMLAND.");
                 }
             }
-            useLoc2.setWorld(null);
+            //useLoc2.setWorld(null);
             return fallDist;
         }
         // 1.13+: Falling on turtle eggs has a chance of breaking them.
@@ -186,7 +187,7 @@ public class NoFall extends Check {
                     debug(player, "Apply block-state change workaround for TURTLE_EGG.");
                 }
             }
-            useLoc2.setWorld(null);
+            //useLoc2.setWorld(null);
             return fallDist;
         }
         // 1.17+ Falling on stalagmites will multiply the fall DISTANCE (not DAMAGE) by x2, making the player vulnerable to fall damage even by just jumping on such a block
@@ -200,7 +201,7 @@ public class NoFall extends Check {
                 if (isStalagmite) {
                     // Source of the formula: PointedDripstoneBlock.java -> fallOn() -> calculateFallDamage()
                     fallDist = (fallDist + 0.5f) * 2.0f; // 0.5 is the offset, vanilla's would be 2.0 actually. We use 0.5 because we do not ceil the final fall damage, like vanilla does.
-                    useLoc2.setWorld(null);
+                    //useLoc2.setWorld(null);
                     if (pData.isDebugActive(type)) {
                         debug(player, "Player fell on a stalagmite: multiply the final fall distance by x2.");
                     } 
@@ -217,7 +218,7 @@ public class NoFall extends Check {
             data.clearWindChargeImpulse();
             fallDist = (float) (lastImpulseY < y ? 0.0 : lastImpulseY - y);
         }
-        useLoc2.setWorld(null);
+        //useLoc2.setWorld(null);
         return fallDist;
     }
     
@@ -602,8 +603,8 @@ public class NoFall extends Check {
         final float fallDistance = player.getFallDistance();
         // TODO: Might also detect too high mc fall dist.
         if (data.noFallFallDistance > fallDistance) {
-            final double playerY = player.getLocation(useLoc).getY();
-            useLoc.setWorld(null);
+            final double playerY = player.getLocation().getY();
+            //useLoc.setWorld(null);
             if (player.isFlying() || player.getGameMode() == GameMode.CREATIVE
                 || player.getAllowFlight() && pData.getGenericInstance(MovingConfig.class).noFallSkipAllowFlight) {
                 // Forestall potential issues with flying plugins.

@@ -106,10 +106,10 @@ public class LocUtil {
      *             if World is null.
      */
     public static Location set(final Location loc, final World world, final IGetPositionWithLook pos) {
-        loc.setWorld(testWorld(world));
-        loc.setX(pos.getX());
-        loc.setY(pos.getY());
-        loc.setZ(pos.getZ());
+        //loc.setWorld(testWorld(world));
+        //loc.setX(pos.getX());
+        //loc.setY(pos.getY());
+        //loc.setZ(pos.getZ());
         loc.setYaw(pos.getYaw());
         loc.setPitch(pos.getPitch());
         return loc;

@@ -64,7 +64,8 @@ public class CollisionUtil {
     public static final double COLLISION_EPSILON = 1.0E-7;
     private final static boolean ServerIsAtLeast1_8 = ServerVersion.isAtLeast("1.8");
     /** Temporary use, setWorld(null) once finished. */
-    private static final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private static final Location useLoc = new Location(null, 0, 0, 0);
 
 
     /**
@@ -116,10 +117,10 @@ public class CollisionUtil {
      */
     public static double directionCheck(final Player player, final double targetX, final double targetY, final double targetZ, final double targetWidth, final double targetHeight, final double precision)
     {
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         final Vector dir = loc.getDirection();
         final double res = directionCheck(loc.getX(), loc.getY() + MovingUtil.getEyeHeight(player), loc.getZ(), dir.getX(), dir.getY(), dir.getZ(), targetX, targetY, targetZ, targetWidth, targetHeight, precision);
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         return res;
     }
 

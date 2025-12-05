@@ -84,8 +84,9 @@ public class CombinedListener extends CheckListener implements JoinLeaveListener
 
     private final int idFakeInvulnerable = counters.registerKey("fakeinvulnerable");
 
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
     /** Location for temporary use with getLocation(useLoc). Always call setWorld(null) after use. Use LocUtil.clone before passing to other API. */
-    final Location useLoc = new Location(null, 0, 0, 0); 
+    //final Location useLoc = new Location(null, 0, 0, 0);
 
     /** Auxiliary functionality. */
     private final AuxMoving aux = NCPAPIProvider.getNoCheatPlusAPI().getGenericInstance(AuxMoving.class);
@@ -196,7 +197,7 @@ public class CombinedListener extends CheckListener implements JoinLeaveListener
     private boolean shouldDenyGlidingStart(final Player player, boolean toggledOn, boolean isToggleGlideEvent) {
         if (toggledOn) {
             final PlayerMoveInfo info = aux.usePlayerMoveInfo();
-            info.set(player, player.getLocation(info.useLoc), null, 0.0001); // Only restrict very near ground.
+            info.set(player, player.getLocation(), null, 0.0001); // Only restrict very near ground.
             final IPlayerData pData = DataManager.getPlayerData(player);
             final MovingData data = pData.getGenericInstance(MovingData.class);
             final boolean res = !MovingUtil.canLiftOffWithElytra(player, info.from, data);
@@ -228,7 +229,7 @@ public class CombinedListener extends CheckListener implements JoinLeaveListener
             return;
         }
         final PlayerMoveInfo info = aux.usePlayerMoveInfo();
-        info.set(event.getPlayer(), event.getPlayer().getLocation(info.useLoc), null, 0.0001);
+        info.set(event.getPlayer(), event.getPlayer().getLocation(), null, 0.0001);
         if (MovingUtil.canStillGlide(event.getPlayer(), info.from, data)) {
             // Nothing to do.
             info.cleanup();
@@ -545,13 +546,13 @@ public class CombinedListener extends CheckListener implements JoinLeaveListener
         final MovingConfig cc = pData.getGenericInstance(MovingConfig.class);
         final ItemStack stack = Bridge1_9.getItemInMainHand(player);
         final PlayerMoveInfo moveInfo = aux.usePlayerMoveInfo();
-        final Location loc =  player.getLocation(useLoc);
+        final Location loc =  player.getLocation();
         // This (odd) vanilla mechanic can be found in Player/EntityHuman.java.attack()
         // If the player is sprint-attacking or is attacking with a knockback-equipped weapon, speed is slowed down and the sprinting status will reset.
         moveInfo.set(player, loc, null, cc.yOnGround);
         if (!MovingUtil.shouldCheckSurvivalFly(player, moveInfo.from, null, data, cc, pData)) {
             // Clean-up
-            useLoc.setWorld(null);
+            //useLoc.setWorld(null);
             aux.returnPlayerMoveInfo(moveInfo);
             return;
         }
@@ -563,7 +564,7 @@ public class CombinedListener extends CheckListener implements JoinLeaveListener
             }
         }
         // Clean-up
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
         aux.returnPlayerMoveInfo(moveInfo);
     }
     

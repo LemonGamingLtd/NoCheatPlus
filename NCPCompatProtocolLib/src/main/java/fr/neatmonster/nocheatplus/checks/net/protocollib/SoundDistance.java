@@ -106,7 +106,8 @@ public class SoundDistance extends BaseAdapter {
             ));
 
     private final Integer idSoundEffectCancel = counters.registerKey("packet.sound.cancel");
-    private final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private final Location useLoc = new Location(null, 0, 0, 0);
     /** Legacy check behavior. */
     private final boolean pre1_9;
 
@@ -167,7 +168,7 @@ public class SoundDistance extends BaseAdapter {
         }
 
         // Compare distance of player to the weather location.
-        final Location loc = player.getLocation(useLoc);
+        final Location loc = player.getLocation();
         final StructureModifier<Integer> ints = packetContainer.getIntegers();
         final double dSq = TrigUtil.distanceSquared(ints.read(0) / 8, ints.read(2) / 8, loc.getX(), loc.getZ());
         //        if (data.debug) {
@@ -178,7 +179,7 @@ public class SoundDistance extends BaseAdapter {
             event.setCancelled(true);
             counters.add(idSoundEffectCancel, 1);
         }
-        useLoc.setWorld(null);
+        //useLoc.setWorld(null);
     }
     
     @Override

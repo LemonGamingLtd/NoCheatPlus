@@ -1334,7 +1334,8 @@ public class BlockProperties {
     protected static float breakPenaltyOffGround = 5f;
 
     /** The Constant useLoc. */
-    private static final Location useLoc = new Location(null, 0, 0, 0);
+    // TODO (NAHU): FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU, FUCK YOU
+    //private static final Location useLoc = new Location(null, 0, 0, 0);
 
     /**
      * Initialize blocks and tools properties. This can be called at any time
@@ -2233,8 +2234,8 @@ public class BlockProperties {
      * @return the breaking duration
      */
     public static long getBreakingDuration(final Material BlockType, final Player player) {
-        final long res = getBreakingDuration(BlockType, Bridge1_9.getItemInMainHand(player), player.getInventory().getHelmet(), player, player.getLocation(useLoc));
-        useLoc.setWorld(null);
+        final long res = getBreakingDuration(BlockType, Bridge1_9.getItemInMainHand(player), player.getInventory().getHelmet(), player, player.getLocation());
+        //useLoc.setWorld(null);
         return res;
     }
 
