@@ -2416,9 +2416,11 @@ public class MovingListener extends CheckListener implements TickListener, IRemo
                 // Don't do the heavier checking here, let moving checks reset these.
                 continue;
             }
-            if (checkHover(player, data, cc, pData, info)) {
-                rem.add(playerName);
-            }
+            SchedulerHelper.runSyncDelayedTaskForEntity(player, plugin, (arg) -> {
+                if (checkHover(player, data, cc, pData, info)) {
+                    rem.add(playerName);
+                }
+            }, () -> {}, 1L);
         }
         hoverTicks.removeAll(rem);
         aux.returnPlayerMoveInfo(info);
